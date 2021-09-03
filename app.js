@@ -1,12 +1,3 @@
-// const loadBackground = () => {
-
-//     fetch(url)
-//         .then(res => res.json())
-//         .then(data => backgroundImage(data))
-
-// }
-
-
 const loadDefault = () => {
     const url = `https://api.weatherapi.com/v1/current.json?key=1129c19eec9d405a92a110744210309&q=Dhaka`;
     console.log(url);
@@ -18,7 +9,7 @@ const loadDefault = () => {
 }
 
 const displayDefault = (data) => {
-    console.log(data);
+    // console.log(data);
     const current = data.current;
     const weatherDhaka = document.getElementById('dhaka');
     const divDhaka = document.createElement('div');
@@ -27,10 +18,11 @@ const displayDefault = (data) => {
     <h3>${current.temp_c} &deg;C</h3>
     <h4 class="lead"><b>Feels Like ${current.feelslike_c} &deg;C<b></h3>
     <h4 class="lead"><b>${current.condition.text}</b></h4>
-    `;
-    const condition = data.current.temp_c;
+    <h3 class="lead"><b>Humidity: ${current.humidity}% Wind :${current.wind_kph}km/h Direction: ${current.wind_dir}</b></h3>`;
+    const temp = parseInt(data.current.temp_c);
+    const condition = data.current.condition.text;
     const isDay = data.current.is_day;
-    background(condition, isDay);
+    background(condition, isDay, temp);
     weatherDhaka.appendChild(divDhaka);
 }
 
@@ -66,34 +58,60 @@ const display = (data) => {
     <h3>${current.temp_c} &deg;C</h3>
     <h4 class="lead"><b>Feels Like ${current.feelslike_c} &deg;<b>C</h3>
     <h4 class="lead"><b>${current.condition.text}</b></h4>
+    <h3 class="lead"><b>Humidity: ${current.humidity}%, Wind :${current.wind_kph}, Direction: ${current.wind_dir}</b></h3>
     `;
-    const condition = parseInt(data.current.temp_c);
+    const temp = parseInt(data.current.temp_c);
+    const condition = data.current.condition.text;
     const isDay = data.current.is_day;
-    background(condition, isDay);
+    background(condition, isDay, temp);
 
     weatherDiv.appendChild(div);
 }
-const background = (condition, isDay) => {
+const background = (condition, isDay, temp) => {
+    if (condition.includes("cloudy") && (isDay == 1 || isDay == 0)) {
+        if (temp < 10) {
+            document.body.style.background = "url(images/cold.jpg) no-repeat ";
+            document.body.style.backgroundSize = "cover ";
+            document.body.style.height = "100vh ";
+        }
+        else if (temp > 11 && temp < 25) {
+            document.body.style.background = "url(images/mist.jpg) no-repeat ";
+            document.body.style.backgroundSize = "cover ";
+            document.body.style.height = "100vh ";
+        }
+        else if (temp > 25) {
+            document.body.style.background = "url(images/cloudy.jpg) no-repeat";
+            document.body.style.backgroundSize = "cover ";
+            document.body.style.height = "100vh ";
+        }
+    }
 
-    if ((condition > 11 && condition < 25) && (isDay == 1 || isDay == 0)) {
-        document.body.style.background = "url(images/mist.jpg) no-repeat ";
+    else if (condition.includes("Mist") && (isDay == 1 || isDay == 0)) {
+        document.body.style.background = "url(images/mist.jpg) no-repeat";
         document.body.style.backgroundSize = "cover ";
         document.body.style.height = "100vh ";
+    }
 
-    }
-    else if (condition > 25 && isDay == 1) {
-        document.body.style.background = "url(images/508526.jpg) no-repeat ";
+    else if (condition.includes("rain") && (isDay == 1 || isDay == 0)) {
+        document.body.style.background = "url(images/rain.jpg) no-repeat";
         document.body.style.backgroundSize = "cover ";
         document.body.style.height = "100vh ";
     }
-    else if (condition < 10 && (isDay == 1 || isDay == 0)) {
-        document.body.style.background = "url(images/cold.jpg) no-repeat ";
-        document.body.style.backgroundSize = "cover ";
-        document.body.style.height = "100vh ";
-    }
+    // else if (condition.includes("Sunny") && (isDay == 1 || isDay == 0)) {
+    //     document.body.style.background = "url(images/508526.jpg) no-repeat";
+    //     document.body.style.backgroundSize = "cover ";
+    //     document.body.style.height = "100vh ";}
+
     else {
-        document.body.style.background = "url('images/night.jpg') no-repeat";
-        document.body.style.backgroundSize = "cover ";
-        document.body.style.height = "100vh ";
+        if (isDay == 1) {
+            document.body.style.background = "url(images/big-city.jpg) no-repeat";
+            document.body.style.backgroundSize = "cover ";
+            document.body.style.height = "100vh ";
+        }
+        else {
+            document.body.style.background = "url(images/night.jpg) no-repeat";
+            document.body.style.backgroundSize = "cover ";
+            document.body.style.height = "100vh ";
+        }
     }
 }
