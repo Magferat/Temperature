@@ -1,5 +1,5 @@
 const loadDefault = () => {
-    const url = `https://api.weatherapi.com/v1/current.json?key=1129c19eec9d405a92a110744210309&q=Dhaka`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=1129c19eec9d405a92a110744210309&q=Bangladesh`;
     console.log(url);
     document.getElementById('others').textContent = '';
     // Fetching Data From API 
